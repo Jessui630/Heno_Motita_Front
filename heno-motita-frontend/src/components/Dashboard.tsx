@@ -128,7 +128,11 @@ function Dashboard({ accessToken, user, onUnauthorized }: DashboardProps) {
     }
 
     try {
-      const response = await createCrew(accessToken, crew)
+      const response = await createCrew(accessToken, {
+        ...crew,
+        startAt: new Date(`${crew.startAt}T00:00:00.000Z`).toISOString(),
+        endAt: new Date(`${crew.endAt}T00:00:00.000Z`).toISOString(),
+      })
       const manager = managers.find((item) => item.id === crew.managerId)
       setCrews((current) => [{ ...response.crew, manager: response.crew.manager ?? manager }, ...current])
       setCrewForm(defaultCrew)
