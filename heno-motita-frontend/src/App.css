@@ -37,6 +37,10 @@ dd { margin: .25rem 0 0; color: #1a2f22; overflow-wrap: anywhere; }
 .metrics strong { display: block; margin-top: .35rem; font: 600 2rem Aptos Display, Aptos, "Segoe UI", sans-serif; color: #23432f; }
 .dashboard-grid { display: grid; grid-template-columns: minmax(15rem, .75fr) minmax(0, 1.25fr); gap: 2rem; }
 .compact-form { display: grid; align-content: start; gap: .8rem; padding: 1.25rem; background: #f1f4ed; }
+.crew-section { display: grid; gap: 1rem; }
+.crew-create-button { justify-self: start; }
+.crew-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.crew-form h3, .crew-form button, .crew-description { grid-column: 1 / -1; }
 h3 { margin: 0; font: 600 1.2rem Aptos Display, Aptos, "Segoe UI", sans-serif; color: #23432f; }
 .record-table h3 { margin-bottom: 1rem; }
 .table-scroll { overflow-x: auto; }
@@ -70,5 +74,5 @@ select { border: 1px solid #c9d2c9; border-radius: .5rem; padding: .7rem; backgr
 .image-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding-top: .75rem; border-top: 1px solid #dce3db; font-size: .85rem; }
 .image-row a { color: #28563d; overflow-wrap: anywhere; }
 @media (max-width: 720px) { .workspace-grid { grid-template-columns: 1fr; } .inline-form { align-items: stretch; flex-direction: column; } }
-@media (max-width: 720px) { .dashboard-grid { grid-template-columns: 1fr; } .metrics, .portal-metrics { grid-template-columns: 1fr; } .portal-crew { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .dashboard-grid, .crew-form { grid-template-columns: 1fr; } .metrics, .portal-metrics { grid-template-columns: 1fr; } .portal-crew { grid-template-columns: 1fr; } }
 @media (max-width: 720px) { .app-shell { grid-template-columns: 1fr; } .brand-panel { min-height: 38svh; } .content-panel { margin: 0; } }
