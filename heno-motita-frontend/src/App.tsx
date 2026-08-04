@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { getCurrentUser, login } from './api/authApi'
-import { ApiError, apiUrl } from './api/httpClient'
+import { ApiError } from './api/httpClient'
 import Dashboard from './components/Dashboard'
 import FieldWorkspace from './components/FieldWorkspace'
 import PortalDashboard from './components/PortalDashboard'
@@ -77,7 +77,6 @@ function App() {
         <p className="eyebrow">Monitoreo ambiental</p>
         <h1>Heno Motita</h1>
         <p>Gestión de cuadrillas y observaciones Hawksworth para el monitoreo de líquenes.</p>
-        <p className="api-status"><span /> API configurada</p>
       </section>
 
       <section className="content-panel">
@@ -116,7 +115,6 @@ function App() {
             <button type="submit" disabled={submitting}>{submitting ? 'Validando acceso...' : 'Entrar al sistema'}</button>
           </form>
         )}
-        <p className="endpoint">Conectado a <code>{apiUrl}</code></p>
       </section>
     </main>
   )
