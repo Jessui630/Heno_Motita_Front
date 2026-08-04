@@ -110,7 +110,7 @@ function App() {
             </label>
             <label>
               Contraseña
-              <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" minLength={8} maxLength={12} required />
+              <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" minLength={8} maxLength={30} required />
             </label>
             {error && <p className="form-error" role="alert">{error}</p>}
             <button type="submit" disabled={submitting}>{submitting ? 'Validando acceso...' : 'Entrar al sistema'}</button>
