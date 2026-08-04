@@ -1,5 +1,38 @@
 const apiUrl = (import.meta.env.VITE_API_URL ?? 'https://heno-motita.onrender.com/api/v1').replace(/\/$/, '')
 
+function normalizeUnicode(value: unknown): unknown {
+  if (typeof value === 'string') return value.normalize('NFC')
+  if (Array.isArray(value)) return value.map(normalizeUnicode)
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, normalizeUnicode(item)]))
+  }
+  return value
+}
+
+function normalizeJsonBody(body: BodyInit | null | undefined): BodyInit | null | undefined {
+  if (typeof body !== 'string') return body
+
+  try {
+    return JSON.stringify(normalizeUnicode(JSON.parse(body)))
+  } catch {
+    return body
+  }
+}
+
+async function readJson(response: Response): Promise<{ message?: string } | null> {
+  const bytes = await response.arrayBuffer()
+
+  try {
+    return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) as { message?: string }
+  } catch {
+    try {
+      return JSON.parse(new TextDecoder('windows-1252').decode(bytes)) as { message?: string }
+    } catch {
+      return null
+    }
+  }
+}
+
 export class ApiError extends Error {
   readonly status: number
 
@@ -12,6 +45,12 @@ export class ApiError extends Error {
 export async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), 15_000)
+  const headers = new Headers(options.headers)
+
+  if (headers.get('Content-Type')?.startsWith('application/json')) {
+    headers.set('Content-Type', 'application/json; charset=UTF-8')
+  }
+  headers.set('Accept', 'application/json; charset=UTF-8')
 
   let response: Response
 
@@ -19,10 +58,8 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
     response = await fetch(`${apiUrl}${path}`, {
       ...options,
       signal: controller.signal,
-      headers: {
-        Accept: 'application/json',
-        ...options.headers,
-      },
+      headers,
+      body: normalizeJsonBody(options.body),
     })
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
@@ -33,7 +70,7 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
     window.clearTimeout(timeout)
   }
 
-  const body = await response.json().catch(() => null) as { message?: string } | null
+  const body = await readJson(response)
 
   if (!response.ok) {
     throw new ApiError(body?.message ?? 'No fue posible completar la solicitud.', response.status)
