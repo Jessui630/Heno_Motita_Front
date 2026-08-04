@@ -4,6 +4,7 @@ import { getCurrentUser, login } from './api/authApi'
 import { ApiError, apiUrl } from './api/httpClient'
 import Dashboard from './components/Dashboard'
 import FieldWorkspace from './components/FieldWorkspace'
+import PortalDashboard from './components/PortalDashboard'
 import type { User } from './types/auth.types'
 import { validateLogin } from './utils/validators'
 import './App.css'
@@ -93,6 +94,7 @@ function App() {
             <button type="button" className="secondary-button" onClick={handleLogout}>Cerrar sesión</button>
             </div>
             <Dashboard accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
+            <PortalDashboard accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
             <FieldWorkspace accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
           </>
         ) : (

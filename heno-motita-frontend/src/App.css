@@ -46,6 +46,17 @@ th { color: #617068; font-size: .72rem; letter-spacing: .06em; text-transform: u
 .notice { margin: 0 0 1rem; padding: .75rem; border-left: 3px solid #5f8d43; background: #eef7e8; color: #315b25; font-size: .9rem; }
 .restricted-panel { margin-top: 2rem; padding: 1.25rem; background: #f1f4ed; }
 .workspace { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dce3db; }
+.portal-panel { margin-top: 2rem; padding: 1.5rem 0 2rem; border-top: 1px solid #dce3db; }
+.portal-metrics { margin-top: 1.5rem; grid-template-columns: repeat(4, 1fr); }
+.portal-metrics article { min-height: 7.4rem; }
+.portal-crew-list { display: grid; gap: .75rem; }
+.portal-crew { display: grid; grid-template-columns: minmax(12rem, 1fr) auto; gap: .45rem 1rem; padding: 1rem; background: #f1f4ed; border-left: 3px solid #79a04c; }
+.portal-crew strong, .current-crew strong { display: block; color: #23432f; font: 600 1.08rem Georgia, serif; }
+.portal-crew span, .portal-crew small, .portal-crew time, .current-crew span { display: block; color: #68756c; font-size: .84rem; }
+.portal-crew time { grid-column: 1 / -1; padding-top: .55rem; border-top: 1px solid #d6e0d4; }
+.current-crew { display: grid; gap: .4rem; margin: 1rem 0 1.5rem; padding: 1rem; border-left: 3px solid #d4992f; background: #fff8e7; }
+.panel-loading { margin: 1rem 0; color: #68756c; }
+.empty-state { margin-top: 1rem; padding: 1rem; border-left: 3px solid #d4992f; background: #fff8e7; color: #745411; }
 .inline-form { display: flex; align-items: end; gap: .75rem; margin: 1.5rem 0; }
 .inline-form label { flex: 1; }
 .workspace-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
@@ -59,5 +70,5 @@ select { border: 1px solid #c9d2c9; border-radius: .5rem; padding: .7rem; backgr
 .image-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding-top: .75rem; border-top: 1px solid #dce3db; font-size: .85rem; }
 .image-row a { color: #28563d; overflow-wrap: anywhere; }
 @media (max-width: 720px) { .workspace-grid { grid-template-columns: 1fr; } .inline-form { align-items: stretch; flex-direction: column; } }
-@media (max-width: 720px) { .dashboard-grid { grid-template-columns: 1fr; } .metrics { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .dashboard-grid { grid-template-columns: 1fr; } .metrics, .portal-metrics { grid-template-columns: 1fr; } .portal-crew { grid-template-columns: 1fr; } }
 @media (max-width: 720px) { .app-shell { grid-template-columns: 1fr; } .brand-panel { min-height: 38svh; } .content-panel { margin: 0; } }
