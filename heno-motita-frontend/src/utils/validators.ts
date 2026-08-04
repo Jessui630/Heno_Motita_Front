@@ -8,8 +8,8 @@ export function validateLogin(email: string, password: string): string | null {
     return 'Ingresa un correo electrónico válido de hasta 40 caracteres.'
   }
 
-  if (password.length < 8 || password.length > 12) {
-    return 'La contraseña debe tener entre 8 y 12 caracteres.'
+  if (password.length < 8 || password.length > 30) {
+    return 'La contraseña debe tener entre 8 y 30 caracteres.'
   }
 
   return null
@@ -28,8 +28,8 @@ export function validateManager(manager: CreateManagerInput): string | null {
     return 'Ingresa un correo electrónico válido de hasta 40 caracteres.'
   }
 
-  if (manager.password.length < 8 || manager.password.length > 12 || !strongPasswordPattern.test(manager.password)) {
-    return 'La contraseña debe tener entre 8 y 12 caracteres e incluir mayúscula, minúscula, número y carácter especial.'
+  if (manager.password.length < 8 || manager.password.length > 30 || !strongPasswordPattern.test(manager.password)) {
+    return 'La contraseña debe tener entre 8 y 30 caracteres e incluir mayúscula, minúscula, número y carácter especial.'
   }
 
   if (phone && !/^\d{10}$/.test(phone)) {
