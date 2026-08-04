@@ -42,10 +42,11 @@ function FieldWorkspace({ accessToken, user, onUnauthorized }: FieldWorkspacePro
         }
         if (user.role === 'CREW_MANAGER') {
           const data = await listManagerCurrentCrews(accessToken)
-          setAvailableCrews(data.crews.map((crew) => ({ id: crew.id, name: crew.name })))
+          setAvailableCrews(data.crews.map(({ crew }) => ({ id: crew.id, name: crew.name })))
         }
       } catch (requestError) {
         if (requestError instanceof ApiError && requestError.status === 401) onUnauthorized()
+        else if (requestError instanceof ApiError && requestError.status === 404 && user.role === 'STUDENT') setError('No tienes una cuadrilla vigente para registrar actividad de campo.')
       }
     }
     void loadPortalCrews()
