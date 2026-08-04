@@ -9,6 +9,14 @@ export function login(email: string, password: string) {
   })
 }
 
+export function loginStudentWithToken(token: string) {
+  return request<LoginResponse>('/auth/student-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  })
+}
+
 export function getCurrentUser(accessToken: string) {
   return request<{ message: string; user: User }>('/auth/me', {
     headers: { Authorization: `Bearer ${accessToken}` },

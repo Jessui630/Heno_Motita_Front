@@ -5,7 +5,8 @@ import { ApiError } from './api/httpClient'
 import Dashboard from './components/Dashboard'
 import FieldWorkspace from './components/FieldWorkspace'
 import PortalDashboard from './components/PortalDashboard'
-import type { User } from './types/auth.types'
+import StudentTokenLogin from './components/StudentTokenLogin'
+import type { LoginResponse, User } from './types/auth.types'
 import { validateLogin } from './utils/validators'
 import './App.css'
 
@@ -18,6 +19,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [studentLoginView, setStudentLoginView] = useState(() => window.location.hash === '#alumnos')
 
   const accessToken = sessionStorage.getItem(sessionKey)
 
@@ -33,6 +35,15 @@ function App() {
       .then(({ user: currentUser }) => setUser(currentUser))
       .catch(() => sessionStorage.removeItem(sessionKey))
       .finally(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    function updateView() {
+      setStudentLoginView(window.location.hash === '#alumnos')
+    }
+
+    window.addEventListener('hashchange', updateView)
+    return () => window.removeEventListener('hashchange', updateView)
   }, [])
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -67,6 +78,20 @@ function App() {
     setPassword('')
   }
 
+  function handleStudentAuthenticated(response: LoginResponse) {
+    sessionStorage.setItem(sessionKey, response.accessToken)
+    setUser(response.user)
+    window.location.hash = ''
+  }
+
+  function openStudentLogin() {
+    window.location.hash = 'alumnos'
+  }
+
+  function openGeneralLogin() {
+    window.location.hash = ''
+  }
+
   if (loading) {
     return <main className="app-shell"><p>Validando sesión...</p></main>
   }
@@ -96,6 +121,8 @@ function App() {
             <PortalDashboard accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
             <FieldWorkspace accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
           </>
+        ) : studentLoginView ? (
+          <StudentTokenLogin onAuthenticated={handleStudentAuthenticated} onBack={openGeneralLogin} />
         ) : (
           <form className="login-form" onSubmit={handleSubmit}>
             <div>
@@ -111,9 +138,10 @@ function App() {
               Contraseña
               <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" minLength={8} maxLength={30} required />
             </label>
-            {error && <p className="form-error" role="alert">{error}</p>}
-            <button type="submit" disabled={submitting}>{submitting ? 'Validando acceso...' : 'Entrar al sistema'}</button>
-          </form>
+             {error && <p className="form-error" role="alert">{error}</p>}
+             <button type="submit" disabled={submitting}>{submitting ? 'Validando acceso...' : 'Entrar al sistema'}</button>
+             <button type="button" className="secondary-button" onClick={openStudentLogin}>Acceso para alumnos</button>
+           </form>
         )}
       </section>
     </main>
