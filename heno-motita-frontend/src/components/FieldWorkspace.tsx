@@ -447,7 +447,7 @@ function FieldWorkspace({
         </label>
         <button disabled={loading}>Cargar cuadrilla</button>
       </form>
-      {trees.length > 0 || crewId ? (
+      {loadedCrewId ? (
         <>
           <div className="field-actions">
             <button
@@ -461,29 +461,27 @@ function FieldWorkspace({
             >
               Registrar árbol
             </button>
-            {tree && (
-              <button
-                type="button"
-                className="field-create-button"
-                onClick={() => {
-                  setObservation(null);
-                  setObservationForm(emptyObservation);
-                  setImages([]);
-                  setShowObservationForm(true);
-                }}
-              >
-                Registrar observación
-              </button>
-            )}
-            {observation && (
-              <button
-                type="button"
-                className="field-create-button"
-                onClick={() => setShowEvidenceForm(true)}
-              >
-                Subir evidencia
-              </button>
-            )}
+            <button
+              type="button"
+              className="field-create-button"
+              disabled={!tree}
+              onClick={() => {
+                setObservation(null);
+                setObservationForm(emptyObservation);
+                setImages([]);
+                setShowObservationForm(true);
+              }}
+            >
+              Registrar observación
+            </button>
+            <button
+              type="button"
+              className="field-create-button"
+              disabled={!observation}
+              onClick={() => setShowEvidenceForm(true)}
+            >
+              Subir evidencia
+            </button>
           </div>
           <div className="workspace-grid">
             <div>
@@ -717,15 +715,6 @@ function FieldWorkspace({
                     {observation && (
                       <button
                         type="button"
-                        className="secondary-button field-evidence-button"
-                        onClick={() => setShowImages(true)}
-                      >
-                        Ver imágenes ({images.length})
-                      </button>
-                    )}
-                    {observation && (
-                      <button
-                        type="button"
                         className="secondary-button"
                         onClick={() => {
                           setObservation(null);
@@ -763,6 +752,14 @@ function FieldWorkspace({
                     <small>{item.status}</small>
                   </button>
                 ))}
+                <button
+                  type="button"
+                  className="secondary-button field-evidence-button"
+                  disabled={!observation}
+                  onClick={() => setShowImages(true)}
+                >
+                  Ver imágenes ({images.length})
+                </button>
                 {observation && showEvidenceForm && (
                   <form
                     className="compact-form evidence-form field-modal field-evidence-modal"
