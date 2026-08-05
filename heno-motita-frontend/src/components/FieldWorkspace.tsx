@@ -27,6 +27,7 @@ import type {
   TreeInput,
 } from "../types/resources.types";
 import type { User } from "../types/auth.types";
+import { isValidName, normalizeName } from "../utils/validators";
 
 interface FieldWorkspaceProps {
   accessToken: string;
@@ -163,13 +164,15 @@ function FieldWorkspace({
     };
     if (
       !/^[A-Z0-9][A-Z0-9-]{2,39}$/.test(payload.code) ||
-      payload.commonName.trim().length < 2 ||
+      !isValidName(payload.commonName, 2, 120) ||
+      (payload.scientificName &&
+        !isValidName(payload.scientificName, 2, 160)) ||
       payload.latitude < -90 ||
       payload.latitude > 90 ||
       payload.longitude < -180 ||
       payload.longitude > 180
     ) {
-      setError("Revisa el código del árbol, nombre común y coordenadas.");
+      setError("Revisa el código, los nombres y las coordenadas del árbol.");
       setLoading(false);
       return;
     }
@@ -481,7 +484,7 @@ function FieldWorkspace({
                       onChange={(event) =>
                         setTreeForm({
                           ...treeForm,
-                          commonName: event.target.value,
+                          commonName: normalizeName(event.target.value, 120),
                         })
                       }
                       minLength={2}
@@ -496,7 +499,10 @@ function FieldWorkspace({
                       onChange={(event) =>
                         setTreeForm({
                           ...treeForm,
-                          scientificName: event.target.value,
+                          scientificName: normalizeName(
+                            event.target.value,
+                            160,
+                          ),
                         })
                       }
                       maxLength={160}
