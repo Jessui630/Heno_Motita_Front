@@ -1,5 +1,9 @@
 const apiUrl = (import.meta.env.VITE_API_URL ?? 'https://heno-motita.onrender.com/api/v1').replace(/\/$/, '')
 
+interface RequestOptions extends RequestInit {
+  timeoutMs?: number
+}
+
 function normalizeUnicode(value: unknown): unknown {
   if (typeof value === 'string') return value.normalize('NFC')
   if (Array.isArray(value)) return value.map(normalizeUnicode)
@@ -42,10 +46,11 @@ export class ApiError extends Error {
   }
 }
 
-export async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const controller = new AbortController()
-  const timeout = window.setTimeout(() => controller.abort(), 15_000)
-  const headers = new Headers(options.headers)
+  const { timeoutMs = 15_000, ...fetchOptions } = options
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
+  const headers = new Headers(fetchOptions.headers)
 
   if (headers.get('Content-Type')?.startsWith('application/json')) {
     headers.set('Content-Type', 'application/json; charset=UTF-8')
@@ -56,10 +61,10 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
 
   try {
     response = await fetch(`${apiUrl}${path}`, {
-      ...options,
+      ...fetchOptions,
       signal: controller.signal,
       headers,
-      body: normalizeJsonBody(options.body),
+      body: normalizeJsonBody(fetchOptions.body),
     })
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
