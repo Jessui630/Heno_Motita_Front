@@ -76,6 +76,14 @@ function FieldWorkspace({
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [description, setDescription] = useState("");
   const [showEvidenceForm, setShowEvidenceForm] = useState(false);
+  const [showImages, setShowImages] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<ObservationImage | null>(
+    null,
+  );
+  const [showFullImage, setShowFullImage] = useState(false);
+  const [imageToDelete, setImageToDelete] = useState<ObservationImage | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -157,6 +165,8 @@ function FieldWorkspace({
       setObservations([]);
       setObservation(null);
       setImages([]);
+      setShowImages(false);
+      setSelectedImage(null);
       setLoadedCrewId(crewId.trim());
     } catch (requestError) {
       setLoadedCrewId("");
@@ -221,6 +231,8 @@ function FieldWorkspace({
       setObservations(data.observations);
       setObservation(null);
       setImages([]);
+      setShowImages(false);
+      setSelectedImage(null);
     } catch (requestError) {
       handleError(requestError);
     } finally {
@@ -279,6 +291,11 @@ function FieldWorkspace({
   async function selectObservation(value: Observation) {
     setObservation(value);
     setShowObservationForm(true);
+    setShowEvidenceForm(false);
+    setShowImages(false);
+    setShowFullImage(false);
+    setSelectedImage(null);
+    setImageToDelete(null);
     setObservationForm({
       ...value.hawksworth,
       notes: value.notes,
@@ -345,6 +362,7 @@ function FieldWorkspace({
       setImage(null);
       if (imageInputRef.current) imageInputRef.current.value = "";
       setDescription("");
+      setShowEvidenceForm(false);
       setMessage(data.message);
     } catch (requestError) {
       handleError(requestError);
@@ -353,20 +371,21 @@ function FieldWorkspace({
     }
   }
 
-  async function removeImage(imageId: string) {
-    if (
-      !observation ||
-      !window.confirm("¿Eliminar esta evidencia de forma permanente?")
-    )
-      return;
+  async function removeImage() {
+    if (!observation || !imageToDelete) return;
     setLoading(true);
+    setError("");
     try {
       const data = await deleteObservationImage(
         accessToken,
         observation.id,
-        imageId,
+        imageToDelete.id,
       );
-      setImages((current) => current.filter((item) => item.id !== imageId));
+      setImages((current) =>
+        current.filter((item) => item.id !== imageToDelete.id),
+      );
+      if (selectedImage?.id === imageToDelete.id) setSelectedImage(null);
+      setImageToDelete(null);
       setMessage(data.message);
     } catch (requestError) {
       handleError(requestError);
@@ -428,7 +447,7 @@ function FieldWorkspace({
         </label>
         <button disabled={loading}>Cargar cuadrilla</button>
       </form>
-      {trees.length > 0 || crewId ? (
+      {loadedCrewId ? (
         <>
           <div className="field-actions">
             <button
@@ -442,29 +461,27 @@ function FieldWorkspace({
             >
               Registrar árbol
             </button>
-            {tree && (
-              <button
-                type="button"
-                className="field-create-button"
-                onClick={() => {
-                  setObservation(null);
-                  setObservationForm(emptyObservation);
-                  setImages([]);
-                  setShowObservationForm(true);
-                }}
-              >
-                Registrar observación
-              </button>
-            )}
-            {observation && (
-              <button
-                type="button"
-                className="field-create-button"
-                onClick={() => setShowEvidenceForm(true)}
-              >
-                Subir evidencia
-              </button>
-            )}
+            <button
+              type="button"
+              className="field-create-button"
+              disabled={!tree}
+              onClick={() => {
+                setObservation(null);
+                setObservationForm(emptyObservation);
+                setImages([]);
+                setShowObservationForm(true);
+              }}
+            >
+              Registrar observación
+            </button>
+            <button
+              type="button"
+              className="field-create-button"
+              disabled={!observation}
+              onClick={() => setShowEvidenceForm(true)}
+            >
+              Subir evidencia
+            </button>
           </div>
           <div className="workspace-grid">
             <div>
@@ -735,6 +752,14 @@ function FieldWorkspace({
                     <small>{item.status}</small>
                   </button>
                 ))}
+                <button
+                  type="button"
+                  className="secondary-button field-evidence-button"
+                  disabled={!observation}
+                  onClick={() => setShowImages(true)}
+                >
+                  Ver imágenes ({images.length})
+                </button>
                 {observation && showEvidenceForm && (
                   <form
                     className="compact-form evidence-form field-modal field-evidence-modal"
@@ -772,41 +797,133 @@ function FieldWorkspace({
                       maxLength={500}
                     />
                     <button disabled={loading}>Subir evidencia</button>
-                    {images.map((item) => (
-                      <article className="image-row" key={item.id}>
-                        <a className="image-preview-link"
-                          href={item.secureUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={`Abrir ${item.originalFilename} en tamaño completo`}
-                        >
-                          <img
-                            className="image-preview"
-                            src={item.secureUrl}
-                            alt={item.description || item.originalFilename}
-                            loading="lazy"
-                          />
-                        </a>
-                        <div className="image-details">
-                          <a
-                            href={item.secureUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {item.originalFilename}
-                          </a>
-                          {item.description && <p>{item.description}</p>}
-                          <button
-                            type="button"
-                            className="secondary-button"
-                            onClick={() => void removeImage(item.id)}
-                          >
-                            Eliminar
-                          </button>
-                        </div>
-                      </article>
-                    ))}
                   </form>
+                )}
+                {observation && showImages && (
+                  <section
+                    className="field-modal image-gallery-modal"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="image-gallery-title"
+                  >
+                    <h3 id="image-gallery-title">Imágenes de la observación</h3>
+                    <button
+                      type="button"
+                      className="field-modal-close"
+                      aria-label="Cerrar imágenes"
+                      onClick={() => setShowImages(false)}
+                    >
+                      ×
+                    </button>
+                    {images.length ? (
+                      <>
+                        <p className="form-description">
+                          Selecciona una imagen y presiónala dos veces para verla
+                          en tamaño real.
+                        </p>
+                        <div className="image-gallery">
+                          {images.map((item) => (
+                            <button
+                              type="button"
+                              className={`image-gallery-item${selectedImage?.id === item.id ? " is-selected" : ""}`}
+                              key={item.id}
+                              onClick={() => setSelectedImage(item)}
+                              onDoubleClick={() => {
+                                setSelectedImage(item);
+                                setShowFullImage(true);
+                              }}
+                              aria-label={`Seleccionar ${item.originalFilename}`}
+                            >
+                              <img
+                                src={item.secureUrl}
+                                alt={item.description || item.originalFilename}
+                                loading="lazy"
+                              />
+                            </button>
+                          ))}
+                        </div>
+                        {selectedImage && (
+                          <div className="selected-image-details">
+                            <strong>{selectedImage.originalFilename}</strong>
+                            {selectedImage.description && (
+                              <p>{selectedImage.description}</p>
+                            )}
+                            <button
+                              type="button"
+                              className="secondary-button danger-button"
+                              onClick={() => setImageToDelete(selectedImage)}
+                            >
+                              Eliminar imagen
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <p className="empty-state">
+                        Esta observación aún no tiene imágenes.
+                      </p>
+                    )}
+                  </section>
+                )}
+                {showFullImage && selectedImage && (
+                  <section
+                    className="field-modal full-image-modal"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={`Vista completa de ${selectedImage.originalFilename}`}
+                  >
+                    <button
+                      type="button"
+                      className="field-modal-close"
+                      aria-label="Cerrar imagen"
+                      onClick={() => setShowFullImage(false)}
+                    >
+                      ×
+                    </button>
+                    <img
+                      src={selectedImage.secureUrl}
+                      alt={selectedImage.description || selectedImage.originalFilename}
+                    />
+                  </section>
+                )}
+                {imageToDelete && (
+                  <section
+                    className="field-modal confirmation-modal"
+                    role="alertdialog"
+                    aria-modal="true"
+                    aria-labelledby="delete-image-title"
+                  >
+                    <h3 id="delete-image-title">¿Eliminar imagen?</h3>
+                    <button
+                      type="button"
+                      className="field-modal-close"
+                      aria-label="Cancelar eliminación"
+                      onClick={() => setImageToDelete(null)}
+                    >
+                      ×
+                    </button>
+                    <p>
+                      Se eliminará permanentemente "{imageToDelete.originalFilename}".
+                    </p>
+                    <div className="confirmation-actions">
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        disabled={loading}
+                        onClick={() => setImageToDelete(null)}
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        type="button"
+                        className="danger-button"
+                        disabled={loading}
+                        onClick={() => void removeImage()}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </section>
                 )}
               </div>
             )}
