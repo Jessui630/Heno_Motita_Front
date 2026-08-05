@@ -168,15 +168,10 @@ function ManagerStudents({
       const response = await registerStudentsBatch(accessToken, crewId, [
         student,
       ]);
-      const credential = response.credentials[0];
       setStudentForm(emptyStudent);
       setShowForm(false);
       await loadStudents(crewId);
-      setNotice(
-        credential
-          ? `${response.message} Código de activación: ${credential.activationCode}`
-          : response.message,
-      );
+      setNotice(`${response.message} El código de activación se envió al correo del alumno.`);
     } catch (requestError) {
       if (requestError instanceof ApiError && requestError.status === 401)
         onUnauthorized();

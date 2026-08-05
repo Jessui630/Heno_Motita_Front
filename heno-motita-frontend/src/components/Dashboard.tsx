@@ -225,16 +225,11 @@ function Dashboard({ accessToken, user, onUnauthorized }: DashboardProps) {
         student,
       ]);
       const history = await listStudentHistory(accessToken);
-      const credential = response.credentials[0];
       setStudents(history.students);
       setStudentForm(defaultStudent);
       setStudentCrewId("");
       setStudentFormOpen(false);
-      setNotice(
-        credential
-          ? `${response.message} Código de activación: ${credential.activationCode}`
-          : response.message,
-      );
+      setNotice(`${response.message} El código de activación se envió al correo del alumno.`);
     } catch (requestError) {
       if (requestError instanceof ApiError && requestError.status === 401)
         return onUnauthorized();
