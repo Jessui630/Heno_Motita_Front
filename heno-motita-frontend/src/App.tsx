@@ -109,11 +109,11 @@ function App() {
           <>
             <div className="session-summary">
               <h2>Bienvenido, {user.name}</h2>
+              <button type="button" className="secondary-button logout-button" onClick={handleLogout}>Cerrar sesión</button>
             </div>
             <Dashboard accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
             <PortalDashboard accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
-            <FieldWorkspace accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
-            <button type="button" className="secondary-button logout-button" onClick={handleLogout}>Cerrar sesión</button>
+            {user.role !== 'SUPER_ADMIN' && <FieldWorkspace accessToken={accessToken} user={user} onUnauthorized={handleLogout} />}
           </>
         ) : studentLoginView ? (
           <StudentTokenLogin onAuthenticated={handleStudentAuthenticated} onBack={openGeneralLogin} />
