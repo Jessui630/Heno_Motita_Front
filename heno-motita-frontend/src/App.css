@@ -142,7 +142,7 @@ select option { padding: .7rem; background: #fff; color: #23432f; }
 .confirmation-modal p { margin: 0 0 1.25rem; color: #657068; overflow-wrap: anywhere; }
 .confirmation-actions { display: flex; justify-content: end; gap: .65rem; }
 .confirmation-actions button, .danger-button { width: fit-content; padding: .55rem .8rem; font-size: .85rem; }
-.danger-button { background: #c62518; color: #fff; }
+.danger-button, .secondary-button.danger-button { background: #c62518; color: #fff; }
 .danger-button:hover:not(:disabled) { background: #9f1d15; }
 @media (max-width: 420px) { .image-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } .confirmation-actions { justify-content: stretch; } .confirmation-actions button { flex: 1; } }
 @media (max-width: 720px) { .workspace-grid { grid-template-columns: 1fr; } .inline-form { align-items: stretch; flex-direction: column; } .workspace .inline-form label { max-width: none; } }
