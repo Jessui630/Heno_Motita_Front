@@ -5,7 +5,7 @@ export interface User {
   name: string
   email: string
   role: UserRole
-  status: 'ACTIVE' | 'INACTIVE' | 'BLOCKED'
+  status: 'ACTIVE' | 'INACTIVE' | 'CANCELLED'
   createdAt: string
   updatedAt: string
 }

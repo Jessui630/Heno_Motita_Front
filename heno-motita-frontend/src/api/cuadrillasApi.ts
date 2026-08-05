@@ -9,4 +9,4 @@ export function listCrewsForUser(accessToken: string) { return request<CrewListR
 export function getCrew(accessToken: string, crewId: string) { return request<{ crew: Crew }>(`/crews/${crewId}`, auth(accessToken)) }
 export function createCrew(accessToken: string, crew: CrewInput) { return request<{ message: string; crew: Crew }>('/crews', json(accessToken, 'POST', crew)) }
 export function updateCrew(accessToken: string, crewId: string, crew: CrewInput) { return request<{ message: string; crew: Crew }>(`/crews/${crewId}`, json(accessToken, 'PUT', crew)) }
-export function updateCrewStatus(accessToken: string, crewId: string, status: 'PENDING' | 'ACTIVE' | 'FINISHED' | 'CANCELLED') { return request<{ message: string; crew: Crew }>(`/crews/${crewId}/status`, json(accessToken, 'PATCH', { status })) }
+export function updateCrewStatus(accessToken: string, crewId: string, status: 'ACTIVE' | 'INACTIVE' | 'CANCELLED') { return request<{ message: string; crew: Crew }>(`/crews/${crewId}/status`, json(accessToken, 'PATCH', { status })) }

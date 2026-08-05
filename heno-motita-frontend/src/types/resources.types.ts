@@ -1,8 +1,8 @@
 import type { Crew, Manager, Pagination } from './admin.types'
 import type { User, UserRole } from './auth.types'
 
-export type AccountStatus = 'ACTIVE' | 'INACTIVE' | 'BLOCKED'
-export type CrewStatus = 'PENDING' | 'ACTIVE' | 'FINISHED' | 'CANCELLED'
+export type AccountStatus = 'ACTIVE' | 'INACTIVE' | 'CANCELLED'
+export type CrewStatus = 'ACTIVE' | 'INACTIVE' | 'CANCELLED'
 export type TreeStatus = 'ACTIVE' | 'INACTIVE' | 'ARCHIVED'
 export type ObservationStatus = 'ACTIVE' | 'ARCHIVED'
 

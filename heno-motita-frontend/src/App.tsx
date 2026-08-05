@@ -97,12 +97,12 @@ function App() {
   }
 
   return (
-    <main className="app-shell">
-      <section className="brand-panel">
+    <main className={user ? 'app-shell app-shell-authenticated' : 'app-shell'}>
+      {!user && <section className="brand-panel">
         <p className="eyebrow">Monitoreo ambiental</p>
         <h1>Heno Motita</h1>
         <p>Gestión de cuadrillas y observaciones Hawksworth para el monitoreo de líquenes.</p>
-      </section>
+      </section>}
 
       <section className="content-panel">
         {user && accessToken ? (

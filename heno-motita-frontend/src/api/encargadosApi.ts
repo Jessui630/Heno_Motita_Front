@@ -13,7 +13,7 @@ export function updateManager(accessToken: string, managerId: string, manager: C
   })
 }
 
-export function updateManagerStatus(accessToken: string, managerId: string, status: 'ACTIVE' | 'INACTIVE' | 'BLOCKED') {
+export function updateManagerStatus(accessToken: string, managerId: string, status: 'ACTIVE' | 'INACTIVE' | 'CANCELLED') {
   return request<{ message: string; manager: Manager }>(`/managers/${managerId}/status`, {
     ...auth(accessToken), method: 'PATCH', headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ status }),
   })
