@@ -75,6 +75,13 @@ th { color: #617068; font-size: .72rem; letter-spacing: .06em; text-transform: u
 .workspace { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dce3db; }
 .workspace > .form-description { display: none; }
 .portal-panel { margin-top: 2rem; padding: 1.5rem 0 2rem; border-top: 1px solid #dce3db; }
+.manager-panel { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dce3db; }
+.manager-students { display: grid; gap: 1rem; }
+.crew-selector { width: min(100%, 24rem); }
+.manager-student-form { position: fixed; z-index: 12; top: 50%; left: 50%; width: min(calc(100vw - 2rem), 32rem); max-height: calc(100svh - 2rem); overflow: auto; transform: translate(-50%, -50%); border-radius: 1rem; background: rgb(241 244 237 / 96%); box-shadow: 0 1.5rem 4rem rgb(23 53 38 / 28%); scrollbar-width: none; }
+.manager-student-form::-webkit-scrollbar { display: none; }
+.manager-student-form::before { content: ''; position: fixed; z-index: -1; top: 50%; left: 50%; width: 100vw; height: 100svh; transform: translate(-50%, -50%); background: rgb(23 53 38 / 30%); pointer-events: none; }
+.manager-student-form h3 { padding-right: 2.5rem; }
 .portal-metrics { margin-top: 1.5rem; grid-template-columns: repeat(4, 1fr); }
 .portal-metrics article { min-height: 7.4rem; }
 .portal-crew-list { display: grid; gap: .75rem; }
