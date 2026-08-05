@@ -1,4 +1,5 @@
 :root { font-family: Aptos, "Segoe UI", ui-sans-serif, system-ui, sans-serif; color: #1b2d26; background: #eef2e8; font-synthesis: none; }
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; }
+body { margin: 0; min-width: 320px; overflow-x: hidden; scrollbar-width: none; }
+body::-webkit-scrollbar { display: none; }
 button, input { font: inherit; }

@@ -23,7 +23,7 @@ export interface Crew {
   startAt: string
   endAt: string
   studentLimit: number
-  status: 'PENDING' | 'ACTIVE' | 'FINISHED' | 'CANCELLED'
+  status: 'ACTIVE' | 'INACTIVE' | 'CANCELLED'
 }
 
 export interface StudentHistoryItem {
