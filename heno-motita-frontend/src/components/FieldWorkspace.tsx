@@ -223,7 +223,13 @@ function FieldWorkspace({
   async function selectTree(value: Tree) {
     setTree(value);
     setTreeForm(value);
-    setShowTreeForm(true);
+    setShowTreeForm(false);
+    setShowObservationForm(false);
+    setShowEvidenceForm(false);
+    setShowImages(false);
+    setShowFullImage(false);
+    setSelectedImage(null);
+    setImageToDelete(null);
     setLoading(true);
     setError("");
     try {
@@ -290,7 +296,7 @@ function FieldWorkspace({
 
   async function selectObservation(value: Observation) {
     setObservation(value);
-    setShowObservationForm(true);
+    setShowObservationForm(false);
     setShowEvidenceForm(false);
     setShowImages(false);
     setShowFullImage(false);
@@ -465,6 +471,14 @@ function FieldWorkspace({
               type="button"
               className="field-create-button"
               disabled={!tree}
+              onClick={() => setShowTreeForm(true)}
+            >
+              Editar árbol
+            </button>
+            <button
+              type="button"
+              className="field-create-button"
+              disabled={!tree}
               onClick={() => {
                 setObservation(null);
                 setObservationForm(emptyObservation);
@@ -473,6 +487,14 @@ function FieldWorkspace({
               }}
             >
               Registrar observación
+            </button>
+            <button
+              type="button"
+              className="field-create-button"
+              disabled={!observation}
+              onClick={() => setShowObservationForm(true)}
+            >
+              Editar observación
             </button>
             <button
               type="button"
