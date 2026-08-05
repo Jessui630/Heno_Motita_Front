@@ -35,12 +35,27 @@ dd { margin: .25rem 0 0; color: #1a2f22; overflow-wrap: anywhere; }
 .dashboard-nav button.active, .dashboard-nav button:hover:not(:disabled), .refresh-button:hover:not(:disabled) { background: #28563d; color: #fff; }
 .dashboard-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
 .dashboard-heading h2 { margin-bottom: 0; }
+.dashboard-actions { display: flex; flex-wrap: wrap; justify-content: end; gap: .45rem; }
+.dashboard-create-button { padding: .55rem .7rem; font-size: .8rem; }
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .metrics article { padding: 1.25rem; background: #f1f4ed; border-left: 3px solid #79a04c; }
 .metrics span { display: block; color: #66756c; font-size: .8rem; }
 .metrics strong { display: block; margin-top: .35rem; font: 600 2rem Aptos Display, Aptos, "Segoe UI", sans-serif; color: #23432f; }
 .dashboard-grid { display: grid; grid-template-columns: minmax(15rem, .75fr) minmax(0, 1.25fr); gap: 2rem; }
 .compact-form { display: grid; align-content: start; gap: .8rem; padding: 1.25rem; background: #f1f4ed; }
+.manager-section { display: grid; gap: 1rem; }
+.manager-create-button { justify-self: start; }
+.manager-form, .crew-form, .student-form { position: fixed; z-index: 10; top: 50%; left: 50%; width: min(calc(100vw - 2rem), 42rem); max-height: calc(100svh - 2rem); overflow: auto; transform: translate(-50%, -50%); border-radius: 1rem; background: rgb(241 244 237 / 94%); box-shadow: 0 1.5rem 4rem rgb(23 53 38 / 28%); scrollbar-width: none; }
+.manager-form::-webkit-scrollbar, .crew-form::-webkit-scrollbar, .student-form::-webkit-scrollbar { display: none; }
+.manager-form::before, .crew-form::before, .student-form::before { content: ''; position: fixed; z-index: -1; top: 50%; left: 50%; width: 100vw; height: 100svh; transform: translate(-50%, -50%); background: rgb(23 53 38 / 30%); pointer-events: none; }
+.manager-create-button, .crew-create-button, .student-create-button { display: none; }
+.modal-close { position: fixed; z-index: 11; right: max(.75rem, calc(50% - 24.25rem)); display: grid; width: 2.5rem; height: 2.5rem; place-items: center; padding: 0; border: 1px solid rgb(255 255 255 / 45%); border-radius: 50%; background: rgb(23 53 38 / 84%); color: #fff; font-size: 1.65rem; font-weight: 400; line-height: 1; }
+.modal-close-manager { top: max(1.25rem, calc(50% - 16.25rem)); }
+.modal-close-crew { top: max(1.25rem, calc(50% - 18rem)); }
+.modal-close-student { top: max(1.25rem, calc(50% - 10.5rem)); }
+.modal-close:hover:not(:disabled) { background: #173526; }
+.manager-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.manager-form h3, .manager-form button, .manager-form .field-help { grid-column: 1 / -1; }
 .crew-section { display: grid; gap: 1rem; }
 .crew-create-button { justify-self: start; }
 .crew-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -88,5 +103,5 @@ select { border: 1px solid #c9d2c9; border-radius: .5rem; padding: .7rem; backgr
 .image-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding-top: .75rem; border-top: 1px solid #dce3db; font-size: .85rem; }
 .image-row a { color: #28563d; overflow-wrap: anywhere; }
 @media (max-width: 720px) { .workspace-grid { grid-template-columns: 1fr; } .inline-form { align-items: stretch; flex-direction: column; } }
-@media (max-width: 720px) { .dashboard-grid, .crew-form, .student-form, .student-profile-grid { grid-template-columns: 1fr; } .metrics, .portal-metrics { grid-template-columns: 1fr; } .portal-crew { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .dashboard-heading { align-items: start; flex-direction: column; } .dashboard-actions { justify-content: start; } .dashboard-grid, .manager-form, .crew-form, .student-form, .student-profile-grid { grid-template-columns: 1fr; } .metrics, .portal-metrics { grid-template-columns: 1fr; } .portal-crew { grid-template-columns: 1fr; } }
 @media (max-width: 720px) { .app-shell { grid-template-columns: 1fr; } .brand-panel { min-height: 38svh; } .content-panel { margin: 0; } }
