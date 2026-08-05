@@ -5,7 +5,7 @@ const auth = (accessToken: string) => ({ headers: { Authorization: `Bearer ${acc
 const json = (accessToken: string, method: 'POST' | 'PUT' | 'PATCH', body: unknown) => ({ method, headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
 
 export function activateStudent(email: string, activationCode: string, password: string) { return request<{ message: string; student: Student }>('/auth/activate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, activationCode, password }) }) }
-export function registerStudentsBatch(accessToken: string, crewId: string, students: StudentInput[]) { return request<{ message: string; crewId: string; registered: number; credentials: Array<StudentInput & { studentId: string; activationCode: string; expiresAt: string }> }>(`/crews/${crewId}/students/batch`, json(accessToken, 'POST', { students })) }
+export function registerStudentsBatch(accessToken: string, crewId: string, students: StudentInput[]) { return request<{ message: string; crewId: string; registered: number }>(`/crews/${crewId}/students/batch`, json(accessToken, 'POST', { students })) }
 export function listCrewStudents(accessToken: string, crewId: string) { return request<{ students: Student[] }>(`/crews/${crewId}/students?page=1&limit=100`, auth(accessToken)) }
 export function getStudent(accessToken: string, studentId: string) { return request<{ student: Student }>(`/students/${studentId}`, auth(accessToken)) }
 export function updateStudent(accessToken: string, studentId: string, student: StudentInput) { return request<{ message: string; student: Student }>(`/students/${studentId}`, json(accessToken, 'PUT', student)) }
