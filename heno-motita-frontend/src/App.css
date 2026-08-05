@@ -76,6 +76,7 @@ th { color: #617068; font-size: .72rem; letter-spacing: .06em; text-transform: u
 .workspace > .form-description { display: none; }
 .portal-panel { margin-top: 2rem; padding: 1.5rem 0 2rem; border-top: 1px solid #dce3db; }
 .manager-panel { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dce3db; }
+.student-panel { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dce3db; }
 .manager-students { display: grid; gap: 1rem; }
 .crew-selector { width: min(100%, 24rem); }
 .manager-student-form { position: fixed; z-index: 12; top: 50%; left: 50%; width: min(calc(100vw - 2rem), 32rem); max-height: calc(100svh - 2rem); overflow: auto; transform: translate(-50%, -50%); border-radius: 1rem; background: rgb(241 244 237 / 96%); box-shadow: 0 1.5rem 4rem rgb(23 53 38 / 28%); scrollbar-width: none; }

@@ -3,10 +3,9 @@ import type { FormEvent } from "react";
 import { getCurrentUser, login } from "./api/authApi";
 import { ApiError } from "./api/httpClient";
 import Dashboard from "./components/Dashboard";
-import FieldWorkspace from "./components/FieldWorkspace";
 import ManagerPanel from "./components/ManagerPanel";
-import PortalDashboard from "./components/PortalDashboard";
 import StudentTokenLogin from "./components/StudentTokenLogin";
+import StudentPanel from "./components/StudentPanel";
 import type { LoginResponse, User } from "./types/auth.types";
 import { validateLogin } from "./utils/validators";
 import "./App.css";
@@ -148,18 +147,11 @@ function App() {
               />
             )}
             {user.role === "STUDENT" && (
-              <>
-                <PortalDashboard
-                  accessToken={accessToken}
-                  user={user}
-                  onUnauthorized={handleLogout}
-                />
-                <FieldWorkspace
-                  accessToken={accessToken}
-                  user={user}
-                  onUnauthorized={handleLogout}
-                />
-              </>
+              <StudentPanel
+                accessToken={accessToken}
+                user={user}
+                onUnauthorized={handleLogout}
+              />
             )}
           </>
         ) : studentLoginView ? (
@@ -213,7 +205,7 @@ function App() {
               className="secondary-button"
               onClick={openStudentLogin}
             >
-              Acceso para alumnos
+              Activar cuenta de alumno
             </button>
           </form>
         )}
