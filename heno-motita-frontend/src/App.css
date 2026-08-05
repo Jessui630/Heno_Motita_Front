@@ -126,7 +126,7 @@ select option { padding: .7rem; background: #fff; color: #23432f; }
 .evidence-form input[type="file"]::file-selector-button { margin-right: .75rem; padding: .55rem .75rem; border: 0; border-radius: .35rem; background: #28563d; color: #fff; cursor: pointer; font: inherit; font-size: .8rem; font-weight: 700; }
 .evidence-form input[type="file"]::file-selector-button:hover { background: #1c422e; }
 .image-upload-preview { display: block; width: min(100%, 20rem); max-height: 14rem; margin: 0 auto; border-radius: .5rem; object-fit: contain; background: #dce3db; }
-.field-evidence-button { width: fit-content; padding: .55rem .7rem; font-size: .8rem; }
+.field-evidence-button { width: fit-content; margin-top: 1rem; padding: .55rem .7rem; font-size: .8rem; }
 .image-gallery-modal { width: min(calc(100vw - 2rem), 46rem); padding: 1.5rem; }
 .image-gallery-modal .form-description { margin: 0 0 1rem; }
 .image-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: .75rem; }
@@ -142,8 +142,8 @@ select option { padding: .7rem; background: #fff; color: #23432f; }
 .confirmation-modal p { margin: 0 0 1.25rem; color: #657068; overflow-wrap: anywhere; }
 .confirmation-actions { display: flex; justify-content: end; gap: .65rem; }
 .confirmation-actions button, .danger-button { width: fit-content; padding: .55rem .8rem; font-size: .85rem; }
-.danger-button { background: #9c3f32; }
-.danger-button:hover:not(:disabled) { background: #7e3026; }
+.danger-button { background: #c62518; color: #fff; }
+.danger-button:hover:not(:disabled) { background: #9f1d15; }
 @media (max-width: 420px) { .image-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } .confirmation-actions { justify-content: stretch; } .confirmation-actions button { flex: 1; } }
 @media (max-width: 720px) { .workspace-grid { grid-template-columns: 1fr; } .inline-form { align-items: stretch; flex-direction: column; } .workspace .inline-form label { max-width: none; } }
 @media (max-width: 720px) { .session-summary, .dashboard-heading { align-items: start; flex-direction: column; } .dashboard-actions { justify-content: start; } .dashboard-grid, .manager-form, .crew-form, .student-form, .student-profile-grid { grid-template-columns: 1fr; } .metrics, .portal-metrics { grid-template-columns: 1fr; } .portal-crew { grid-template-columns: 1fr; } }
