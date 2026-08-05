@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import {
   createObservation,
@@ -73,11 +73,24 @@ function FieldWorkspace({
   const [showObservationForm, setShowObservationForm] = useState(false);
   const [images, setImages] = useState<ObservationImage[]>([]);
   const [image, setImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [description, setDescription] = useState("");
   const [showEvidenceForm, setShowEvidenceForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!image) {
+      setImagePreviewUrl("");
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(image);
+    setImagePreviewUrl(previewUrl);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [image]);
 
   function handleError(requestError: unknown) {
     if (requestError instanceof ApiError && requestError.status === 401)
@@ -273,6 +286,9 @@ function FieldWorkspace({
       latitude: value.latitude,
       longitude: value.longitude,
     });
+    setImage(null);
+    setDescription("");
+    if (imageInputRef.current) imageInputRef.current.value = "";
     setLoading(true);
     setError("");
     try {
@@ -327,6 +343,7 @@ function FieldWorkspace({
       );
       setImages((current) => [data.image, ...current]);
       setImage(null);
+      if (imageInputRef.current) imageInputRef.current.value = "";
       setDescription("");
       setMessage(data.message);
     } catch (requestError) {
@@ -733,6 +750,7 @@ function FieldWorkspace({
                       ×
                     </button>
                     <input
+                      ref={imageInputRef}
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
                       onChange={(event) =>
@@ -740,6 +758,13 @@ function FieldWorkspace({
                       }
                       required
                     />
+                    {imagePreviewUrl && (
+                      <img
+                        className="image-upload-preview"
+                        src={imagePreviewUrl}
+                        alt="Vista previa de la evidencia seleccionada"
+                      />
+                    )}
                     <textarea
                       placeholder="Descripción opcional"
                       value={description}
@@ -748,22 +773,38 @@ function FieldWorkspace({
                     />
                     <button disabled={loading}>Subir evidencia</button>
                     {images.map((item) => (
-                      <div className="image-row" key={item.id}>
-                        <a
+                      <article className="image-row" key={item.id}>
+                        <a className="image-preview-link"
                           href={item.secureUrl}
                           target="_blank"
                           rel="noreferrer"
+                          aria-label={`Abrir ${item.originalFilename} en tamaño completo`}
                         >
-                          {item.originalFilename}
+                          <img
+                            className="image-preview"
+                            src={item.secureUrl}
+                            alt={item.description || item.originalFilename}
+                            loading="lazy"
+                          />
                         </a>
-                        <button
-                          type="button"
-                          className="secondary-button"
-                          onClick={() => void removeImage(item.id)}
-                        >
-                          Eliminar
-                        </button>
-                      </div>
+                        <div className="image-details">
+                          <a
+                            href={item.secureUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {item.originalFilename}
+                          </a>
+                          {item.description && <p>{item.description}</p>}
+                          <button
+                            type="button"
+                            className="secondary-button"
+                            onClick={() => void removeImage(item.id)}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </article>
                     ))}
                   </form>
                 )}
