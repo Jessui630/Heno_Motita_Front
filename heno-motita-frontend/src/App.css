@@ -8,6 +8,7 @@
 .api-status span { width: .6rem; height: .6rem; border-radius: 50%; background: #b7df76; box-shadow: 0 0 0 .25rem rgb(183 223 118 / 16%); }
 .content-panel { width: min(100%, 58rem); margin: auto; padding: clamp(2rem, 6vw, 5rem); }
 .app-shell-authenticated .content-panel { width: min(100%, 90rem); }
+.session-summary { margin-bottom: 2rem; }
 .login-form, .session-card { display: grid; gap: 1.4rem; }
 h2 { margin: .35rem 0 .65rem; font: 600 2rem/1.1 Aptos Display, Aptos, "Segoe UI", sans-serif; color: #173526; }
 .form-description { margin: 0; color: #657068; line-height: 1.55; }
@@ -25,6 +26,7 @@ dt { color: #6c766f; font-size: .78rem; font-weight: 700; letter-spacing: .08em;
 dd { margin: .25rem 0 0; color: #1a2f22; overflow-wrap: anywhere; }
 .secondary-button { justify-self: start; background: #e3ebe2; color: #28563d; }
 .secondary-button:hover:not(:disabled) { background: #d3e0d2; }
+.logout-button { margin-top: 2rem; }
 .endpoint { margin: 3rem 0 0; color: #738077; font-size: .75rem; line-height: 1.5; overflow-wrap: anywhere; }
 .endpoint code { color: #496354; }
 .dashboard { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dce3db; }

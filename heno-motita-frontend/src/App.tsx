@@ -107,19 +107,13 @@ function App() {
       <section className="content-panel">
         {user && accessToken ? (
           <>
-            <div className="session-card">
-            <p className="eyebrow">Sesión activa</p>
-            <h2>Bienvenido, {user.name}</h2>
-            <dl>
-              <div><dt>Correo</dt><dd>{user.email}</dd></div>
-              <div><dt>Rol</dt><dd>{user.role}</dd></div>
-              <div><dt>Estado</dt><dd>{user.status}</dd></div>
-            </dl>
-            <button type="button" className="secondary-button" onClick={handleLogout}>Cerrar sesión</button>
+            <div className="session-summary">
+              <h2>Bienvenido, {user.name}</h2>
             </div>
             <Dashboard accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
             <PortalDashboard accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
             <FieldWorkspace accessToken={accessToken} user={user} onUnauthorized={handleLogout} />
+            <button type="button" className="secondary-button logout-button" onClick={handleLogout}>Cerrar sesión</button>
           </>
         ) : studentLoginView ? (
           <StudentTokenLogin onAuthenticated={handleStudentAuthenticated} onBack={openGeneralLogin} />
